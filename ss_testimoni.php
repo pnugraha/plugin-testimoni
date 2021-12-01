@@ -34,6 +34,8 @@ if ( ! defined( 'SS_TESTIMONI_TABLE' ) ) {
 
 include SS_TESTIMONI_PATH . '/inc/class-ss-testimoni-shortcode.php';
 include SS_TESTIMONI_PATH . '/inc/class-ss-testimoni-helper.php';
+include SS_TESTIMONI_PATH . '/inc/class-testimoni-admin.php';
+include SS_TESTIMONI_PATH . '/inc/class-ss-testimoni-widget.php';
 
 class SS_Testimoni_Setup {
 
@@ -50,7 +52,8 @@ class SS_Testimoni_Setup {
 	public function __construct() {
 		register_activation_hook(__FILE__, array($this, 'SS_Testimoni_activated'));
 		add_action( 'admin_menu', array( $this, 'SS_Testimoni_menu'  ) );
-		add_action( 'admin_init', array( $this, 'SS_Testimoni_init_settings'  ) );		
+		add_action( 'admin_init', array( $this, 'SS_Testimoni_init_settings'  ) );
+		add_action( 'widgets_init', array( $this, 'SS_Testimoni_init_widget' ) );		
 		SS_Testimoni_Shortcode::get_instance();
 	}
 
@@ -84,9 +87,6 @@ class SS_Testimoni_Setup {
 	    }
 
 	    // Admin Page Layout
-
-	    $datas = SS_Testimoni_Helper::selectSSTestimoni();
-
 	    $default_template = SS_TESTIMONI_PATH . 'templates/admin-default.php';		
 		include $default_template;	
 	}
@@ -107,6 +107,13 @@ class SS_Testimoni_Setup {
 	      	false,
 	      	'site-settings'
 	    );
+	}
+
+	/**
+	 * init setting for widgets
+	 */
+	public function SS_Testimoni_init_widget() {
+		register_widget( 'SS_Testimoni_Widget' );
 	}
 
 

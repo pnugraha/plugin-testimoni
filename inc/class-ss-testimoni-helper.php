@@ -6,35 +6,8 @@
  */
 class SS_Testimoni_Helper {
 
-	/**
-	 * Insert helpful contra on single post
-	 *
-	 * @global $wpdb
-	 *
-	 */
-	public static function selectSSTestimoni( $per_page = 10, $page_number = 1 ) {
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . SS_TESTIMONI_TABLE;
-		$sql = "SELECT * FROM {$wpdb->prefix}.$table_name";
-
-		if ( ! empty( $_REQUEST['orderby'] ) ) {
-		$sql .= ' ORDER BY ' . esc_sql( $_REQUEST['orderby'] );
-		$sql .= ! empty( $_REQUEST['order'] ) ? ' ' . esc_sql( $_REQUEST['order'] ) : ' ASC';
-		}
-
-		$sql .= " LIMIT $per_page";
-
-		$sql .= ' OFFSET ' . ( $page_number - 1 ) * $per_page;
-
-		$result = $wpdb->get_results( $sql, 'ARRAY_A' );
-
-		return $result;
-	}
-
-
-	/**
-	 * Insert helpful contra on single post
+    /**
+	 * Insert helpful contra on testimoni
 	 *
 	 * @global $wpdb
 	 *
@@ -42,10 +15,11 @@ class SS_Testimoni_Helper {
 	public static function insertSSTestimoni( $data ) {
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . SS_TESTIMONI_TABLE;
+		$table_testimoni = $wpdb->prefix . SS_TESTIMONI_TABLE ;
+
 		$wpdb->query( $wpdb->prepare( 
 		"
-			INSERT INTO $table_name
+			INSERT INTO {$table_testimoni} 
 			( `name`, `email`, `phone_number`, `testimonial` )
 			VALUES ( %s, %s, %s, %s )
 		", 
@@ -53,6 +27,39 @@ class SS_Testimoni_Helper {
 		) );
 		
 		return $wpdb->insert_id;
+	}
+
+	/**
+	 * Delete helpful contra on testimoni
+	 *
+	 * @global $wpdb
+	 *
+	 */
+	public static function deleteSSTestimoni( $id ) {
+		global $wpdb;
+
+		$table_testimoni = $wpdb->prefix . SS_TESTIMONI_TABLE ;
+
+		$wpdb->delete( "$table_testimoni ",
+        	[ 'id' => $id ],
+        	[ '%d' ]
+        );
+	}
+
+	/**
+	 * Get testimoni for frotent widgets
+	 *
+	 * @global $wpdb
+	 *
+	 */
+	public static function displaySSTestimoni( $limit = 5 ) {
+		global $wpdb;
+
+		$table_testimoni = $wpdb->prefix . SS_TESTIMONI_TABLE ;
+
+		$query = "SELECT * FROM {$table_testimoni} ORDER BY id DESC LIMIT {$limit} ";
+
+        return $wpdb->get_results( $query );
 	}
 
 }
