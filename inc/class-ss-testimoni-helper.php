@@ -40,7 +40,7 @@ class SS_Testimoni_Helper {
 
 		$table_testimoni = $wpdb->prefix . SS_TESTIMONI_TABLE ;
 
-		$wpdb->delete( "$table_testimoni ",
+		$wpdb->delete( "$table_testimoni",
         	[ 'id' => $id ],
         	[ '%d' ]
         );
